@@ -143,6 +143,8 @@ const (
 	TokenRollback  TokenType = 215
 	TokenCommit    TokenType = 216
 
+	TokenCopy TokenType = 250 // TURELLA
+
 	// Other QL Keywords, These are clause-level keywords that mark separation between clauses
 	TokenFrom     TokenType = 300 // from
 	TokenWhere    TokenType = 301 // where
@@ -171,6 +173,30 @@ const (
 	TokenGlobal   TokenType = 324 // GLOBAL
 	TokenSession  TokenType = 325 // SESSION
 	TokenTables   TokenType = 326 // TABLES
+
+	TokenCIamRole       TokenType = 350 // iam_role // TURELLA
+	TokenCDelimiter     TokenType = 351 // delimiter // TURELLA
+	TokenCEscape        TokenType = 352 // escape // TURELLA
+	TokenCManifest      TokenType = 353 // manifest // TURELLA
+	TokenCQuoteAs       TokenType = 354 // quote-as // TURELLA
+	TokenCExplicitIds   TokenType = 355 // explicit_ids // TURELLA
+	TokenCRemovequotes  TokenType = 356 // removequotes // TURELLA
+	TokenCEmptyasnull   TokenType = 357 // emptyasnull // TURELLA
+	TokenCBlanksasnull  TokenType = 358 // blanksasnull // TURELLA
+	TokenCMaxerror      TokenType = 359 // maxerror // TURELLA
+	TokenCTimeformat    TokenType = 360 // timeformat // TURELLA
+	TokenCFormatAs      TokenType = 361 // format-as // TURELLA
+	TokenCFormatParquet TokenType = 370 // parquet // TURELLA
+	TokenCFormatAvro    TokenType = 371 // avro // TURELLA
+	TokenCGzip          TokenType = 372 // gzip // TURELLA
+	TokenCFixedwidth    TokenType = 373 // fixedwidth // TURELLA
+	TokenCCsv           TokenType = 374 // csv // TURELLA
+	TokenCJson          TokenType = 375 // JSON // TURELLA
+	TokenCLzop          TokenType = 376 // lzop // TURELLA
+	TokenCReadratio     TokenType = 377 // readratio // TURELLA
+	TokenCEncripted     TokenType = 378 // encripted // TURELLA
+	TokenCRegion        TokenType = 379 // region // TURELLA
+	TokenCSSH           TokenType = 380 // ssh // TURELLA
 
 	// ddl major words
 	TokenSchema         TokenType = 400 // SCHEMA
@@ -321,7 +347,7 @@ var (
 		TokenInsert:    {Description: "insert"},
 		TokenSelect:    {Description: "select"},
 		TokenDelete:    {Description: "delete"},
-		TokenUpdate:    {Description: "update"},
+		TokenUpdate:    {Description: "copy"},
 		TokenUpsert:    {Description: "upsert"},
 		TokenAlter:     {Description: "alter"},
 		TokenCreate:    {Description: "create"},
@@ -334,6 +360,8 @@ var (
 		TokenReplace:   {Description: "replace"},
 		TokenRollback:  {Description: "rollback"},
 		TokenCommit:    {Description: "commit"},
+
+		TokenCopy: {Description: "copy"}, // TURELLA
 
 		// Top Level dml ql clause keywords
 		TokenInto:    {Description: "into"},
@@ -364,6 +392,30 @@ var (
 		TokenGlobal:   {Description: "global"},
 		TokenSession:  {Description: "session"},
 		TokenTables:   {Description: "tables"},
+
+		TokenCIamRole:       {Description: "iam_role"},     // TURELLA
+		TokenCDelimiter:     {Description: "delimiter"},    // TURELLA
+		TokenCEscape:        {Description: "escape"},       // TURELLA
+		TokenCManifest:      {Description: "manifest"},     // TURELLA
+		TokenCQuoteAs:       {Description: "quote"},        // TURELLA
+		TokenCExplicitIds:   {Description: "explicit_ids"}, // TURELLA
+		TokenCRemovequotes:  {Description: "removequotes"}, // TURELLA
+		TokenCEmptyasnull:   {Description: "emptyasnull"},  // TURELLA
+		TokenCBlanksasnull:  {Description: "blanksasnull"}, // TURELLA
+		TokenCMaxerror:      {Description: "maxerror"},     // TURELLA
+		TokenCTimeformat:    {Description: "timeformat"},   // TURELLA
+		TokenCFormatAs:      {Description: "format"},       // TURELLA
+		TokenCFormatParquet: {Description: "parquet"},      // TURELLA
+		TokenCFormatAvro:    {Description: "avro"},         // TURELLA
+		TokenCGzip:          {Description: "gzip"},         // TURELLA
+		TokenCFixedwidth:    {Description: "fixedwidth"},   // TURELLA
+		TokenCCsv:           {Description: "csv"},          // TURELLA
+		TokenCJson:          {Description: "myjson"},       // TURELLA
+		TokenCLzop:          {Description: "lzop"},         // TURELLA
+		TokenCReadratio:     {Description: "readratio"},    // TURELLA
+		TokenCEncripted:     {Description: "encripted"},    // TURELLA
+		TokenCRegion:        {Description: "region"},       // TURELLA
+		TokenCSSH:           {Description: "ssh"},          // TURELLA
 
 		// ddl keywords
 		TokenSchema:         {Description: "schema"},
@@ -434,6 +486,8 @@ var (
 
 func init() {
 	LoadTokenInfo()
+	SqlDialect.Init()
+	RedshiftDialect.Init()
 }
 
 // LoadTokenInfo load the token info into global map

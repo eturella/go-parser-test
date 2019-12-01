@@ -1,10 +1,10 @@
-copy favoritemovies from 'dynamodb://Movies'
-iam_role 'arn:aws:iam::0123456789012:role/MyRedshiftRole' 
-readratio 50;
-
 copy listing
 from 's3://mybucket/data/listing/' 
 iam_role 'arn:aws:iam::0123456789012:role/MyRedshiftRole';
+
+copy favoritemovies from 'dynamodb://Movies'
+iam_role 'arn:aws:iam::0123456789012:role/MyRedshiftRole' 
+readratio 50;
 
 copy sales
 from 'emr://j-SAMPLE2B500FC/myoutput/part-*' 
@@ -14,7 +14,7 @@ delimiter '\t' lzop;
 copy sales
 from 'emr://j-SAMPLE2B500FC/myoutput/json/' 
 iam_role 'arn:aws:iam::0123456789012:role/MyRedshiftRole'
-JSON 's3://mybucket/jsonpaths.txt';
+json 's3://mybucket/jsonpaths.txt';
 
 copy category
 from 's3://mybucket/custdata' 
@@ -23,7 +23,14 @@ iam_role 'arn:aws:iam::0123456789012:role/MyRedshiftRole';
 copy customer
 from 's3://mybucket/cust.manifest' 
 iam_role 'arn:aws:iam::0123456789012:role/MyRedshiftRole'
-manifest;
+ssh;
+
+copy customer
+from 's3://mybucket/cust.manifest' 
+iam_role 'arn:aws:iam::0123456789012:role/MyRedshiftRole'
+manifest
+encrypted
+region as 'awr-region';
 
 copy listing 
 from 's3://mybucket/data/listings_pipe.txt' 

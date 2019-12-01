@@ -5,6 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch COPY FROM",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "/Users/turella/go/src/github.com/eturella/go-parser-test/copyfrom/copyfrom.go",
+            "env": {},
+            "args": []
+        },
+        {
             "name": "Launch",
             "type": "go",
             "request": "launch",
@@ -13,5 +22,6 @@
             "env": {},
             "args": []
         }
+
     ]
 }
