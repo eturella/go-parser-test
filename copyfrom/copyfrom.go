@@ -1,7 +1,6 @@
 package main
 
 import (
-	// "github.com/araddon/qlbridge/lex"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -9,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/eturella/go-parser-test/copyfrom/lex"
+	"github.com/eturella/go-parser-test/copyfrom/redshift"
 )
 
 func main() {
@@ -32,7 +31,7 @@ func main() {
 	// // 	tv(lex.TokenFrom, "FROM"),
 	// // 	tv(lex.TokenValue, "'s3://mybucket/data/listing/'"),
 	// // }
-	// l := lex.NewRedshiftLexer(sql)
+	// l := redshift.NewRedshiftLexer(sql)
 	// fmt.Printf("sql: %v\n", sql)
 	// // for _, goodToken := range tokens {
 	// // 	tok := l.NextToken()
@@ -41,6 +40,9 @@ func main() {
 	// tok := l.NextToken()
 	// for tok.T != lex.TokenEOF {
 	// 	fmt.Printf("got:%v  \n", tok)
+	// 	if tok.T == lex.TokenError {
+	// 		fmt.Printf("%v", tok.Err(l))
+	// 	}
 	// 	tok = l.NextToken()
 	// }
 
@@ -63,40 +65,20 @@ func main() {
 
 	for i, sql := range examples {
 		sql = strings.TrimSpace(sql)
-		sql = strings.Replace(sql, "json", "myjson", -1)
-		// sql = strings.Replace(sql, "format as", "format", 1)
-		// sql = strings.Replace(sql, "delimiter as", "delimiter", 1)
 		if len(sql) > 0 && (tutti || singolo == i+1) {
-			l := lex.NewRedshiftLexer(sql)
 			fmt.Printf("\n\nn. esempio: %d\n", i+1)
 			fmt.Printf("sql: %v\n\n", sql)
-			// for _, goodToken := range tokens {
-			// 	tok := l.NextToken()
-			// 	fmt.Printf("got:%v  want:%v \n", tok, goodToken)
-			// }
-			tok := l.NextToken()
-			for tok.T != lex.TokenEOF {
-				fmt.Printf("got:%v  \n", tok)
-				if tok.T == lex.TokenError {
-					fmt.Println("  --> errore")
-				}
-				tok = l.NextToken()
+			ok := redshift.ParseCopy(sql)
+			if ok {
+				fmt.Println("OK")
+			} else {
+				fmt.Println("ERRORE")
 			}
 		}
 	}
 
 }
 
-func tv(t lex.TokenType, v string) lex.Token {
-	return lex.Token{T: t, V: v}
-}
-
-// RedshiftCopyFrom is the COPY FROM Statement
-type RedshiftCopyFrom struct {
-	kw            lex.TokenType       // From
-	Table         string              // table name
-	Columns       []string            // Column Names
-	Authorization AuthorizationStruct // iam_role, etc etc
-	Format        FormatStruct        // format of input file and other options (compression, conversion)
-	Options       []string            // other optional parameters
-}
+// func tv(t lex.TokenType, v string) lex.Token {
+// 	return lex.Token{T: t, V: v}
+// }
